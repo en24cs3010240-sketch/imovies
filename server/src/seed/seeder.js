@@ -94,11 +94,11 @@ const seedDatabase = async () => {
       { hour: 20, minute: 45 },
     ];
 
-    // Generate across 4 days (today + next 3 days)
+    // Generate across 60 days (2 full months) into the future
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    for (let dayOffset = 0; dayOffset <= 3; dayOffset++) {
+    for (let dayOffset = 0; dayOffset < 60; dayOffset++) {
       const showDate = new Date(today);
       showDate.setDate(showDate.getDate() + dayOffset);
 

@@ -18,20 +18,27 @@ const MovieDetailsPage = () => {
   const [trailerOpen, setTrailerOpen] = useState(false);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
 
-  // Generate 4 calendar days starting today
-  const availableDates = [0, 1, 2, 3].map((offset) => {
+  // Generate calendar days for quick tabs (up to 14 days) and full 60-day range
+  const [selectedDateStr, setSelectedDateStr] = useState(() => {
+    return new Date().toISOString().split('T')[0];
+  });
+
+  // Today and 60 days max date
+  const todayStr = new Date().toISOString().split('T')[0];
+  const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 60);
+  const maxDateStr = maxDate.toISOString().split('T')[0];
+
+  const quickDates = [0, 1, 2, 3, 4, 5, 6].map((offset) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
     return {
       offset,
-      dateObj: d,
       dayName: offset === 0 ? 'Today' : offset === 1 ? 'Tomorrow' : d.toLocaleDateString('en-US', { weekday: 'short' }),
       dateFormatted: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       isoString: d.toISOString().split('T')[0],
     };
   });
-
-  const selectedDate = availableDates[selectedDateIndex];
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -76,11 +83,11 @@ const MovieDetailsPage = () => {
   // Filter showtimes by selected calendar day and city
   const filteredShowtimes = showtimes.filter((st) => {
     const showDate = new Date(st.startTime).toISOString().split('T')[0];
-    const matchesDate = showDate === selectedDate.isoString;
+    const matchesDate = showDate === selectedDateStr;
     const matchesCity =
       !selectedCity ||
       selectedCity === 'All' ||
-      (st.theatreId && st.theatreId.city.toLowerCase() === selectedCity.toLowerCase());
+      (st.theatreId && st.theatreId.city && st.theatreId.city.toLowerCase() === selectedCity.toLowerCase());
     return matchesDate && matchesCity;
   });
 
@@ -224,24 +231,41 @@ const MovieDetailsPage = () => {
             </p>
           </div>
 
-          {/* Date Selector Tabs */}
-          <div className="d-flex gap-2 overflow-auto pb-2">
-            {availableDates.map((item, idx) => (
-              <button
-                key={item.offset}
-                type="button"
-                className={`btn btn-sm text-center px-3 py-2 rounded-3 transition-all ${
-                  selectedDateIndex === idx
-                    ? 'btn-danger shadow'
-                    : 'btn-dark border border-secondary border-opacity-50 text-light'
-                }`}
-                style={{ minWidth: '90px' }}
-                onClick={() => setSelectedDateIndex(idx)}
-              >
-                <div className="small fw-semibold">{item.dayName}</div>
-                <div className="small opacity-75">{item.dateFormatted}</div>
-              </button>
-            ))}
+          {/* Date Selector Tabs & 2-Month Calendar Picker */}
+          <div className="d-flex flex-wrap align-items-center gap-2">
+            <div className="d-flex gap-2 overflow-auto pb-1">
+              {quickDates.map((item) => (
+                <button
+                  key={item.offset}
+                  type="button"
+                  className={`btn btn-sm text-center px-3 py-2 rounded-3 transition-all ${
+                    selectedDateStr === item.isoString
+                      ? 'btn-danger shadow'
+                      : 'btn-dark border border-secondary border-opacity-50 text-light'
+                  }`}
+                  style={{ minWidth: '85px' }}
+                  onClick={() => setSelectedDateStr(item.isoString)}
+                >
+                  <div className="small fw-semibold">{item.dayName}</div>
+                  <div className="small opacity-75">{item.dateFormatted}</div>
+                </button>
+              ))}
+            </div>
+
+            {/* 2 Months Date Picker */}
+            <div className="d-flex align-items-center gap-1 bg-dark border border-secondary border-opacity-50 rounded-3 px-2 py-1">
+              <Calendar size={16} className="text-danger flex-shrink-0" />
+              <input
+                type="date"
+                className="bg-transparent border-0 text-light small fw-semibold"
+                style={{ outline: 'none', colorScheme: 'dark' }}
+                min={todayStr}
+                max={maxDateStr}
+                value={selectedDateStr}
+                onChange={(e) => setSelectedDateStr(e.target.value)}
+                title="Select showtimes for up to 2 months in advance"
+              />
+            </div>
           </div>
         </div>
 
@@ -249,13 +273,13 @@ const MovieDetailsPage = () => {
         {Object.keys(groupedTheatres).length === 0 ? (
           <div className="im-card p-5 text-center my-4">
             <Film size={40} className="text-muted mb-3" />
-            <h5 className="text-light fw-bold">No Showtimes Scheduled</h5>
+            <h5 className="text-light fw-bold">No Showtimes on {selectedDateStr}</h5>
             <p className="text-secondary small mb-3">
-              There are no available showtimes for this movie on {selectedDate.dayName} ({selectedDate.dateFormatted}) in {selectedCity}.
+              There are no available showtimes scheduled for this movie on this date in {selectedCity}. You can select any other date over the next 2 months.
             </p>
             <button
               className="btn btn-outline-danger btn-sm"
-              onClick={() => setSelectedDateIndex(0)}
+              onClick={() => setSelectedDateStr(todayStr)}
             >
               Check Today's Schedule
             </button>
