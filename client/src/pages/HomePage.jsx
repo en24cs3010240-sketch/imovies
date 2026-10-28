@@ -120,12 +120,16 @@ const HomePage = () => {
 
                 <button
                   onClick={() => setDemoOpen(true)}
-                  className="btn btn-outline-danger px-4 py-2 d-flex align-items-center gap-2 rounded-3 text-light"
-                  style={{ backdropFilter: 'blur(4px)', borderColor: 'rgba(229, 9, 20, 0.7)' }}
+                  className="btn btn-danger px-4 py-2 d-flex align-items-center gap-2 rounded-3 text-white fw-bold shadow"
+                  style={{
+                    background: 'linear-gradient(135deg, #e50914, #b80610)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    boxShadow: '0 4px 15px rgba(229, 9, 20, 0.5)',
+                  }}
                   title="Watch 4-minute full feature tour"
                 >
-                  <Video size={18} className="text-danger" />
-                  <span>Demo Video Tour</span>
+                  <Play size={18} className="fill-white" />
+                  <span>Watch Demo Video</span>
                 </button>
               </div>
             </div>

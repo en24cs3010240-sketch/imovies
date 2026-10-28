@@ -5,6 +5,7 @@ import { CityProvider } from './context/CityContext';
 
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
+import FloatingDemoButton from './components/common/FloatingDemoButton';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
 import HomePage from './pages/HomePage';
@@ -80,6 +81,7 @@ function App() {
               </Routes>
             </div>
 
+            <FloatingDemoButton />
             <Footer />
           </div>
         </CityProvider>

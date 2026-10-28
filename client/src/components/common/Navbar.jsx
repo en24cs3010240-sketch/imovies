@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Film, MapPin, User, LogOut, Ticket, ShieldAlert, Search, Menu, X, PlayCircle, Video } from 'lucide-react';
+import { Film, MapPin, User, LogOut, Ticket, ShieldAlert, Search, Menu, X, PlayCircle, Play, Video } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCity } from '../../context/CityContext';
 import DemoModal from './DemoModal';
@@ -30,53 +30,86 @@ const Navbar = () => {
 
   return (
     <>
-    <nav className="navbar navbar-expand-lg im-navbar sticky-top py-2 px-3 px-lg-4">
-      <div className="container-fluid">
-        {/* Brand Logo */}
-        <Link to="/" className="navbar-brand d-flex align-items-center gap-2 text-decoration-none">
-          <div
-            className="d-flex align-items-center justify-content-center rounded-3"
-            style={{ width: '38px', height: '38px', background: 'linear-gradient(135deg, #e50914, #990000)' }}
-          >
-            <Film size={22} color="#fff" />
-          </div>
-          <span className="brand-logo mb-0">IMOVIES</span>
-        </Link>
-
-        {/* City Selector (Desktop) */}
-        <div className="d-none d-md-flex align-items-center ms-3 me-auto dropdown">
-          <button
-            className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 dropdown-toggle text-light border-secondary"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style={{ borderRadius: '20px', padding: '0.35rem 0.85rem' }}
-          >
-            <MapPin size={15} className="text-danger" />
-            <span>{selectedCity}</span>
-          </button>
-          <ul className="dropdown-menu dropdown-menu-dark shadow">
-            {cities.map((city) => (
-              <li key={city}>
-                <button
-                  className={`dropdown-item ${city === selectedCity ? 'active' : ''}`}
-                  onClick={() => changeCity(city)}
-                >
-                  {city}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Mobile menu toggle button */}
+      {/* Top Demo Announcement Bar */}
+      <div
+        className="py-1 px-3 text-center small text-light d-flex align-items-center justify-content-center gap-2 border-bottom border-danger border-opacity-25"
+        style={{
+          background: 'linear-gradient(90deg, #1c0305 0%, #3d070a 50%, #1c0305 100%)',
+          fontSize: '0.82rem',
+        }}
+      >
+        <span className="badge bg-danger text-uppercase px-2 py-0 fw-bold">Live Demo</span>
+        <span>Watch the 4-minute full feature video walkthrough:</span>
         <button
-          className="navbar-toggler border-0 text-light d-lg-none"
           type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          onClick={() => setDemoModalOpen(true)}
+          className="btn btn-sm btn-link text-danger p-0 fw-bold text-decoration-underline d-inline-flex align-items-center gap-1"
         >
-          {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+          <Play size={12} className="fill-danger" /> Play Demo Video
         </button>
+      </div>
+
+      <nav className="navbar navbar-expand-lg im-navbar sticky-top py-2 px-3 px-lg-4">
+        <div className="container-fluid">
+          {/* Brand Logo */}
+          <Link to="/" className="navbar-brand d-flex align-items-center gap-2 text-decoration-none">
+            <div
+              className="d-flex align-items-center justify-content-center rounded-3"
+              style={{ width: '38px', height: '38px', background: 'linear-gradient(135deg, #e50914, #990000)' }}
+            >
+              <Film size={22} color="#fff" />
+            </div>
+            <span className="brand-logo mb-0">IMOVIES</span>
+          </Link>
+
+          {/* City Selector (Desktop) */}
+          <div className="d-none d-md-flex align-items-center ms-3 me-auto dropdown">
+            <button
+              className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 dropdown-toggle text-light border-secondary"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style={{ borderRadius: '20px', padding: '0.35rem 0.85rem' }}
+            >
+              <MapPin size={15} className="text-danger" />
+              <span>{selectedCity}</span>
+            </button>
+            <ul className="dropdown-menu dropdown-menu-dark shadow">
+              {cities.map((city) => (
+                <li key={city}>
+                  <button
+                    className={`dropdown-item ${city === selectedCity ? 'active' : ''}`}
+                    onClick={() => changeCity(city)}
+                  >
+                    {city}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Mobile Direct Demo Video Button (always visible on phones/tablets) */}
+          <div className="d-flex align-items-center gap-2 ms-auto me-2 d-lg-none">
+            <button
+              type="button"
+              className="btn btn-sm btn-danger d-inline-flex align-items-center gap-1 px-2 py-1 rounded-pill shadow"
+              style={{ background: 'linear-gradient(135deg, #e50914, #b80610)', fontSize: '0.8rem' }}
+              onClick={() => setDemoModalOpen(true)}
+              title="Watch Demo Video"
+            >
+              <Play size={12} className="fill-white" />
+              <span>Demo Video</span>
+            </button>
+          </div>
+
+          {/* Mobile menu toggle button */}
+          <button
+            className="navbar-toggler border-0 text-light d-lg-none"
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+          </button>
 
         {/* Navbar Links & Controls */}
         <div className={`collapse navbar-collapse ${mobileMenuOpen ? 'show' : ''}`} id="navbarContent">
@@ -126,15 +159,20 @@ const Navbar = () => {
             <li className="nav-item">
               <button
                 type="button"
-                className="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 px-3 py-1 text-light border-danger border-opacity-75 rounded-pill shadow-sm"
+                className="btn btn-sm btn-danger d-inline-flex align-items-center gap-1 px-3 py-1 text-white rounded-pill shadow fw-bold"
+                style={{
+                  background: 'linear-gradient(135deg, #e50914, #b80610)',
+                  boxShadow: '0 2px 12px rgba(229, 9, 20, 0.5)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                }}
                 onClick={() => {
                   setDemoModalOpen(true);
                   setMobileMenuOpen(false);
                 }}
                 title="Watch Feature Walkthrough & Demo Guide"
               >
-                <PlayCircle size={15} className="text-danger" />
-                <span className="fw-semibold">Demo Video</span>
+                <Play size={13} className="fill-white" />
+                <span>Demo Video</span>
               </button>
             </li>
 
