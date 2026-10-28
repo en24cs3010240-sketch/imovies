@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, Ticket, Star, Sparkles, Shield, Film, ChevronRight } from 'lucide-react';
+import { Play, Ticket, Star, Sparkles, Shield, Film, ChevronRight, Video } from 'lucide-react';
 import api from '../services/api';
 import { mockStore } from '../services/mockDataStore';
 import MovieGrid from '../components/movies/MovieGrid';
 import TrailerModal from '../components/common/TrailerModal';
+import DemoModal from '../components/common/DemoModal';
 import { useCity } from '../context/CityContext';
 
 const GENRES = ['All', 'Action', 'Sci-Fi', 'Adventure', 'Drama', 'Crime', 'Biography'];
@@ -17,6 +18,7 @@ const HomePage = () => {
   const [selectedGenre, setSelectedGenre] = useState('All');
   const [loading, setLoading] = useState(true);
   const [trailerOpen, setTrailerOpen] = useState(false);
+  const [demoOpen, setDemoOpen] = useState(false);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -115,6 +117,16 @@ const HomePage = () => {
                     <span>Watch Trailer</span>
                   </button>
                 )}
+
+                <button
+                  onClick={() => setDemoOpen(true)}
+                  className="btn btn-outline-danger px-4 py-2 d-flex align-items-center gap-2 rounded-3 text-light"
+                  style={{ backdropFilter: 'blur(4px)', borderColor: 'rgba(229, 9, 20, 0.7)' }}
+                  title="Watch 4-minute full feature tour"
+                >
+                  <Video size={18} className="text-danger" />
+                  <span>Demo Video Tour</span>
+                </button>
               </div>
             </div>
           </div>
@@ -123,6 +135,27 @@ const HomePage = () => {
 
       {/* Main Content Container */}
       <div className="container mt-5">
+        {/* Interactive Feature Demo Guide Callout */}
+        <div className="p-3 mb-4 rounded-3 border border-danger border-opacity-50 d-flex flex-wrap align-items-center justify-content-between gap-3 shadow-sm" style={{ background: 'linear-gradient(90deg, rgba(229, 9, 20, 0.12), rgba(15, 17, 26, 0.8))' }}>
+          <div className="d-flex align-items-center gap-3">
+            <div className="rounded-circle p-2 bg-danger text-light d-flex align-items-center justify-content-center">
+              <Video size={20} />
+            </div>
+            <div>
+              <strong className="text-light d-block">Explore the IMovies Platform Walkthrough</strong>
+              <small className="text-secondary">Watch a 4-minute demonstration of seat selection, 60-day showtime schedules, mock checkout, and admin dashboard.</small>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="btn btn-sm btn-cinema px-3 py-2 d-inline-flex align-items-center gap-2"
+            onClick={() => setDemoOpen(true)}
+          >
+            <Play size={15} />
+            <span>Watch Demo Video</span>
+          </button>
+        </div>
+
         {/* Genre Pill Filter Bar */}
         <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
           <div>
@@ -223,6 +256,12 @@ const HomePage = () => {
           movieTitle={featuredMovie.title}
         />
       )}
+
+      {/* Product Demo Walkthrough Video Modal */}
+      <DemoModal
+        isOpen={demoOpen}
+        onClose={() => setDemoOpen(false)}
+      />
     </div>
   );
 };

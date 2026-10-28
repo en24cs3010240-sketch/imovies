@@ -13,21 +13,49 @@ A modern, full-stack cinema ticket booking web application built with the **MERN
 
 ---
 
+## 🎥 Live Demo & Video Walkthrough
+
+- 🌐 **Live Web Application**: [https://imovies-red.vercel.app](https://imovies-red.vercel.app)
+- 💻 **GitHub Repository**: [https://github.com/en24cs3010240-sketch/imovies](https://github.com/en24cs3010240-sketch/imovies)
+- 🎬 **YouTube Demo Video Walkthrough**: [Watch Full Feature Walkthrough on YouTube](https://www.youtube.com/watch?v=Way9Dexny3w)
+- ⚡ **Interactive In-App Tour**: Click the **"Demo Video"** button in the top navigation bar or the hero section of any running instance.
+
+### ⏱️ Video Walkthrough Timestamps & Chapters
+
+| Timestamp | Chapter | What's Covered |
+| :--- | :--- | :--- |
+| `00:00` | **Home Page & 60-Day Schedules** | City selection (New York, LA, SF, Chicago), genre filtering, and browsing 2 full months of continuous movie screenings. |
+| `00:45` | **Movie Details & Trailer Player** | Synopsis, director, cast, certification, and responsive YouTube modal trailer playback. |
+| `01:30` | **Interactive Seat Map & 8-Min Hold** | Selecting VIP / Premium / Regular seats with real-time countdown timer & concurrency lock. |
+| `02:15` | **Checkout, Test Payment & QR Ticket** | 1-click test card autofill, simulated payment gateway, celebration confetti, and printable QR e-ticket stub. |
+| `03:00` | **Customer Dashboard & Cancellations** | Order history review, PDF print ticket, and self-service cancellation with simulated refund. |
+| `03:45` | **Protected Administrator Dashboard** | Box office revenue analytics, movie catalog CRUD, multiplex screens management, and showtimes scheduling. |
+
+### 🔑 Instant Demo Credentials
+
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Customer** | `john@example.com` | `Customer@123456` |
+| **Administrator** | `admin@imovies.com` | `Admin@123456` |
+
+---
+
 ## Table of Contents
 
-1. [Features](#features)
-2. [Technology Stack](#technology-stack)
-3. [Architecture & Concurrency Protection](#architecture--concurrency-protection)
-4. [Prerequisites](#prerequisites)
-5. [Installation & Setup](#installation--setup)
-6. [Environment Variables](#environment-variables)
-7. [Database Setup & Seeding](#database-setup--seeding)
-8. [Default User & Administrator Credentials](#default-user--administrator-credentials)
-9. [Running the Application](#running-the-application)
-10. [REST API Documentation](#rest-api-documentation)
-11. [Automated Testing](#automated-testing)
-12. [Troubleshooting & FAQ](#troubleshooting--faq)
-13. [Deployment Instructions](#deployment-instructions)
+1. [Live Demo & Video Walkthrough](#-live-demo--video-walkthrough)
+2. [Features](#features)
+3. [Technology Stack](#technology-stack)
+4. [Architecture & Concurrency Protection](#architecture--concurrency-protection)
+5. [Prerequisites](#prerequisites)
+6. [Installation & Setup](#installation--setup)
+7. [Environment Variables](#environment-variables)
+8. [Database Setup & Seeding](#database-setup--seeding)
+9. [Default User & Administrator Credentials](#default-user--administrator-credentials)
+10. [Running the Application](#running-the-application)
+11. [REST API Documentation](#rest-api-documentation)
+12. [Automated Testing](#automated-testing)
+13. [Troubleshooting & FAQ](#troubleshooting--faq)
+14. [Deployment Instructions](#deployment-instructions)
 
 ---
 

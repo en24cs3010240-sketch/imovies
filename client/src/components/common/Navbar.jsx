@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Film, MapPin, User, LogOut, Ticket, ShieldAlert, Search, Menu, X } from 'lucide-react';
+import { Film, MapPin, User, LogOut, Ticket, ShieldAlert, Search, Menu, X, PlayCircle, Video } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCity } from '../../context/CityContext';
+import DemoModal from './DemoModal';
 
 const Navbar = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const { selectedCity, changeCity, cities } = useCity();
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [demoModalOpen, setDemoModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -27,6 +29,7 @@ const Navbar = () => {
   };
 
   return (
+    <>
     <nav className="navbar navbar-expand-lg im-navbar sticky-top py-2 px-3 px-lg-4">
       <div className="container-fluid">
         {/* Brand Logo */}
@@ -118,6 +121,21 @@ const Navbar = () => {
               >
                 Movies
               </Link>
+            </li>
+
+            <li className="nav-item">
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 px-3 py-1 text-light border-danger border-opacity-75 rounded-pill shadow-sm"
+                onClick={() => {
+                  setDemoModalOpen(true);
+                  setMobileMenuOpen(false);
+                }}
+                title="Watch Feature Walkthrough & Demo Guide"
+              >
+                <PlayCircle size={15} className="text-danger" />
+                <span className="fw-semibold">Demo Video</span>
+              </button>
             </li>
 
             {isAuthenticated ? (
@@ -215,6 +233,8 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+    <DemoModal isOpen={demoModalOpen} onClose={() => setDemoModalOpen(false)} />
+    </>
   );
 };
 

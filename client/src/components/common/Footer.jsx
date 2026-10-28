@@ -35,6 +35,7 @@ const Footer = () => {
               <li className="mb-2"><Link to="/movies?status=upcoming" className="text-secondary text-decoration-none">Coming Soon</Link></li>
               <li className="mb-2"><Link to="/movies?genre=Action" className="text-secondary text-decoration-none">Action Blockbusters</Link></li>
               <li className="mb-2"><Link to="/movies?genre=Sci-Fi" className="text-secondary text-decoration-none">Sci-Fi Cinema</Link></li>
+              <li className="mb-2"><a href="https://www.youtube.com/watch?v=Way9Dexny3w" target="_blank" rel="noreferrer" className="text-danger text-decoration-none fw-semibold">▶ Watch Demo Video</a></li>
             </ul>
           </div>
 
