@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Play, Ticket, Star, Sparkles, Shield, Film, ChevronRight } from 'lucide-react';
 import api from '../services/api';
+import { mockStore } from '../services/mockDataStore';
 import MovieGrid from '../components/movies/MovieGrid';
 import TrailerModal from '../components/common/TrailerModal';
 import { useCity } from '../context/CityContext';
@@ -26,18 +27,28 @@ const HomePage = () => {
           api.get('/movies?status=upcoming&limit=4'),
         ]);
 
-        if (showingRes.data.success) {
+        if (showingRes?.data?.success && showingRes?.data?.data?.length > 0) {
           setNowShowing(showingRes.data.data);
-          if (showingRes.data.data.length > 0) {
-            setFeaturedMovie(showingRes.data.data[0]);
-          }
+          setFeaturedMovie(showingRes.data.data[0]);
+        } else {
+          const fallback = mockStore.getMovies({ status: 'now_showing' });
+          setNowShowing(fallback.data);
+          setFeaturedMovie(fallback.data[0]);
         }
 
-        if (upcomingRes.data.success) {
+        if (upcomingRes?.data?.success && upcomingRes?.data?.data?.length > 0) {
           setUpcoming(upcomingRes.data.data);
+        } else {
+          const fallbackUp = mockStore.getMovies({ status: 'upcoming' });
+          setUpcoming(fallbackUp.data);
         }
       } catch (err) {
-        console.error('Error fetching home movies:', err);
+        console.warn('Network issue fetching home movies, using resilient store:', err.message);
+        const fallback = mockStore.getMovies({ status: 'now_showing' });
+        setNowShowing(fallback.data);
+        setFeaturedMovie(fallback.data[0]);
+        const fallbackUp = mockStore.getMovies({ status: 'upcoming' });
+        setUpcoming(fallbackUp.data);
       } finally {
         setLoading(false);
       }

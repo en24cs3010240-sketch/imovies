@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, Filter, Film, RefreshCw } from 'lucide-react';
 import api from '../services/api';
+import { mockStore } from '../services/mockDataStore';
 import MovieGrid from '../components/movies/MovieGrid';
 
 const GENRES = ['All', 'Action', 'Sci-Fi', 'Adventure', 'Drama', 'Crime', 'Biography', 'Animation', 'Comedy'];
@@ -31,11 +32,16 @@ const MoviesPage = () => {
         if (sort) queryParams.append('sort', sort);
 
         const res = await api.get(`/movies?${queryParams.toString()}`);
-        if (res.data.success) {
+        if (res?.data?.success && res?.data?.data?.length > 0) {
           setMovies(res.data.data);
+        } else {
+          const fallback = mockStore.getMovies({ search, status, genre, language, sort });
+          setMovies(fallback.data);
         }
       } catch (err) {
-        console.error('Error fetching movies list:', err);
+        console.warn('Network issue fetching movies catalog, using resilient store:', err.message);
+        const fallback = mockStore.getMovies({ search, status, genre, language, sort });
+        setMovies(fallback.data);
       } finally {
         setLoading(false);
       }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Star, Clock, Calendar, Play, MapPin, Ticket, Film, User } from 'lucide-react';
 import api from '../services/api';
+import { mockStore } from '../services/mockDataStore';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import TrailerModal from '../components/common/TrailerModal';
 import { useCity } from '../context/CityContext';
@@ -46,14 +47,27 @@ const MovieDetailsPage = () => {
       setError(null);
       try {
         const res = await api.get(`/movies/${id}`);
-        if (res.data.success) {
+        if (res?.data?.success && res?.data?.data) {
           setMovie(res.data.data);
           setShowtimes(res.data.showtimes || []);
         } else {
-          setError('Movie not found');
+          const fallback = mockStore.getMovieById(id);
+          if (fallback.success) {
+            setMovie(fallback.data);
+            setShowtimes(fallback.showtimes || []);
+          } else {
+            setError('Movie not found');
+          }
         }
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to load movie details');
+        console.warn('Network issue fetching movie details, using resilient store:', err.message);
+        const fallback = mockStore.getMovieById(id);
+        if (fallback.success) {
+          setMovie(fallback.data);
+          setShowtimes(fallback.showtimes || []);
+        } else {
+          setError('Movie not found');
+        }
       } finally {
         setLoading(false);
       }
